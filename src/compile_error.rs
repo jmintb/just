@@ -34,9 +34,6 @@ impl Display for CompileError<'_> {
           recipe_line.ordinal(),
         )?;
       }
-      BacktickShebang => {
-        write!(f, "Backticks may not start with `#!`")?;
-      }
       CircularRecipeDependency { recipe, ref circle } => {
         if circle.len() == 2 {
           write!(f, "Recipe `{}` depends on itself", recipe)?;

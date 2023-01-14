@@ -151,3 +151,18 @@ test! {
   stderr: "echo bar\necho foo\n",
   shell: false,
 }
+
+test! {
+  name: backtick_shebang,
+  justfile: "
+    someval:= ```#!/bn/sh
+    echo test
+    ```
+    foo:
+      echo {{someval}}
+  ",
+  args: (),
+  stdout: "test\n",
+  stderr: "echo test\n",
+  shell: false,
+}

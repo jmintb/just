@@ -185,7 +185,18 @@ impl<'src, 'run> Evaluator<'src, 'run> {
   }
 
   fn run_backtick(&self, raw: &str, token: &Token<'src>) -> RunResult<'src, String> {
-    let mut cmd = self.settings.shell_command(self.config);
+    use std::borrow::Cow;
+    let shebang_line = raw.lines().next().ok_or_else(|| Error::Internal {
+      message: "evaluated_lines was empty".to_owned(),
+    })?;
+
+    let shebang = Shebang::new(shebang_line).ok_or_else(|| Error::Internal {
+      message: format!("bad shebang line: {}", shebang_line),
+    })?;
+
+    let new_config = Cow::Owned(self.config);
+
+    let mut cmd = self.settings.shell_command(&new_config);
 
     cmd.arg(raw);
 

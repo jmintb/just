@@ -491,9 +491,11 @@ impl<'tokens, 'src> Parser<'tokens, 'src> {
         contents.to_owned()
       };
 
+      /*
       if contents.starts_with("#!") {
         return Err(next.error(CompileErrorKind::BacktickShebang));
       }
+      */
 
       Ok(Expression::Backtick { contents, token })
     } else if self.next_is(Identifier) {
